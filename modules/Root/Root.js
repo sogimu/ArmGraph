@@ -3,42 +3,42 @@
 
         var me = {};
 
-        me._begin = function() {
+        me.__begin = function() {
             for(var i in this._childs) {
-                this._childs[i]._begin();
+                this._childs[i].__begin();
             }
             
         };
 
-        me._update = function() {
+        me.__update = function() {
             // this._doEvents();
             for(var i in this._childs) {
-                this._childs[i]._update();
+                this._childs[i].__update();
             }             
 
         };
 
-        me._clear = function() {
-            //for(var i=0;i<this._childs.length;i++) {
-            
-            for(var i=this._childs.length-1;i>=0;i--) {
-                this._childs[i]._clear();
+        me.__draw = function() {
+            for(var i in this._childs) {
+                this._childs[i].__draw();
             }
             
         };
 
-        me._draw = function() {
-            for(var i in this._childs) {
-                this._childs[i]._draw();
-            }
-            
+        me.__clear = function() {
+            //for(var i=0;i<this._childs.length;i++) {            
+            for(var i=this._childs.length-1;i>=0;i--) {
+                this._childs[i].__clear();
+            };
         };
 
         me.AddChild = function( O ) {
+            gizmo.Filter(O,"Object");
             this._childs.push(O);        	
         };
 
         me.RemoveChild = function( O ) {
+            gizmo.Filter(O,"Object");
             var index = 0;
             if( (index = this._childs.indexOf(O)) != -1) {
                 delete( this._childs[ index ] );
@@ -46,18 +46,20 @@
         };
 
         me.Start = function() {
-            this._begin();
+            this.__begin();
                 
             this.Start = function() {
-                this.Stop();
+                if(this._isRuning) {
+                    this.Stop();
+                };
                 // armlib.ListenMouseKeyboardEvents();
 
                 var step = (function(O) {
                     return function() {
-                        O._clear();
+                        O.__clear();
 
-                        O._update();
-                        O._draw();                            
+                        O.__update();
+                        O.__draw();                            
                     };
                 })(this);
 
@@ -80,6 +82,7 @@
             if(this._request) {
                     // armlib.NotListenMouseKeyboardEvents();
                     this._cancelAnimationFrame.call(window,this._request);
+                    this._isRuning = false;
             };
         };
 
@@ -138,6 +141,7 @@
         };
 
         me.Set = function( O ) {
+            if(!O) {O = {};};
             this._fps = ( O.fps && (O.fps > 0) ) ? O.fps : 0;
             if( this._isRuning ) {
                 this.Stop();
