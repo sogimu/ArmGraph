@@ -1,0 +1,6 @@
+[submodule "lib/ArmContext"]
+	path = lib/ArmContext
+	url = https://github.com/sogimu/ArmContext.git
+[submodule "lib/Gizmo"]
+	path = lib/Gizmo
+	url = https://github.com/sogimu/Gizmo.git

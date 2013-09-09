@@ -2,7 +2,7 @@ window.onload = function() {
 
     layer1 = ArmContext.Layer({name: "layer1", container: "container", width: 800});
 
-    Root = new ArmGraph.Root({fps: 300});
+    Root = new ArmGraph.Root();
     CTX = layer1.GetCtx();
 
     var Car = new ArmGraph.ArmObject({owner: Root, name: "Car"})
@@ -12,13 +12,14 @@ window.onload = function() {
         this.width = 150;
         this.height = 100;
         this.color = "#ff0000";
-        this.speed = {x: 0, y: 0};
+        this.speed = {x: 0.1, y: 0.2};
 
         this.carBody = new ArmContext.Rect({layer: layer1, x: this.x, y: this.y, width: this.width, height: this.height, fillObject: this.color})
         .Scos({x: -0.2, y: 0});
 
     })
     .SetFunc("update", function() {
+        this.speed.x *= Math.sin(this.speed.x)
         this.x += this.speed.x;
         this.y += this.speed.y;
         
