@@ -13,7 +13,10 @@
             };
             for(var i in this._childs) {
                 this._childs[i].__begin();
-            }
+            };
+            if(this._afterBegin) {
+                this._afterBegin();
+            };
             
         };
 
@@ -24,7 +27,10 @@
             };
             for(var i in this._childs) {
                 this._childs[i].__update();
-            }             
+            };
+            if(this._afterUpdate) {
+                this._afterUpdate();
+            };             
 
         };
 
@@ -34,7 +40,10 @@
             };
             for(var i in this._childs) {
                 this._childs[i].__draw();
-            }
+            };
+            if(this._afterDraw) {
+                this._afterDraw();
+            };
             
         };
 
@@ -42,11 +51,90 @@
             //for(var i=0;i<this._childs.length;i++) {
             if(this._clear) {
                 this._clear();
-            }
+            };
             for(var i=this._childs.length-1;i>=0;i--) {
                 this._childs[i].__clear();
-            }    
+            };
+            if(this._afterClear) {
+                this._afterClear();
+            };    
         };
+
+        // event form mouse
+        me.__onKeyDown = function(e) {
+            if(this._onKeyDown) {
+                this._onKeyDown(e);  
+            };
+            for(var i in this._childs) {
+                // if(this._childs[i].__onKeyDown) {
+                    this._childs[i].__onKeyDown(e);  
+                // }  
+            }
+
+        };
+
+        me.__onKeyPress = function(e) {
+            if(this._onKeyPress) {
+                this._onKeyPress(e);  
+            };  
+
+            for(var i in this._childs) {
+                // if(this._childs[i]._onKeyPress) {
+                    this._childs[i].__onKeyPress(e);  
+                // }  
+            };
+
+        };
+
+        me.__onKeyUp = function(e) {
+            if(this._onKeyUp) {
+                this._onKeyUp(e);  
+            };
+            for(var i in this._childs) {
+                // if(this._childs[i]._onKeyUp) {
+                    this._childs[i].__onKeyUp(e);  
+                // }  
+            }
+
+        };
+
+        // event form mouse
+        me.__onMouseDown = function(e) {
+            if(this._onMouseDown) {
+                this._onMouseDown(e);  
+            };
+            for(var i in this._childs) {
+                // if(this._childs[i]._onMouseDown) {
+                    this._childs[i].__onMouseDown(e);  
+                // }  
+            };
+
+        };
+
+        me.__onMouseUp = function(e) {
+            if(this._onMouseUp) {
+                this._onMouseUp(e);  
+            };
+            for(var i in this._childs) {
+                // if(this._childs[i]._onMouseUp) {
+                    this._childs[i].__onMouseUp(e);  
+                // }  
+            };
+
+        }
+
+        me.__onMouseMove = function(e) {
+            if(this._onMouseMove) {
+                this._onMouseMove(e);  
+            };
+            for(var i in this._childs) {
+                // if(this._childs[i]._onMouseMove) {
+                    this._childs[i].__onMouseMove(e);  
+                // }  
+            };
+
+        };
+
 
         me.AddChild = function( O ) {
             gizmo.Filter(O,"Object");

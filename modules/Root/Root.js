@@ -17,19 +17,19 @@
 
         };
 
-        // me.__draw = function() {
-        //     for(var i in this._childs) {
-        //         this._childs[i].__draw();
-        //     }
+        me.__draw = function() {
+            for(var i in this._childs) {
+                this._childs[i].__draw();
+            }
             
-        // };
+        };
 
-        // me.__clear = function() {
-        //     //for(var i=0;i<this._childs.length;i++) {            
-        //     for(var i=this._childs.length-1;i>=0;i--) {
-        //         this._childs[i].__clear();
-        //     };
-        // };
+        me.__clear = function() {
+            for(var i=0;i<this._childs.length;i++) {            
+            // for(var i=this._childs.length-1;i>=0;i--) {
+                this._childs[i].__clear();
+            };
+        };
 
         // event form mouse
         me.__onKeyDown = function(e) {
@@ -43,18 +43,18 @@
 
         me.__onKeyPress = function(e) {
             for(var i in this._childs) {
-                if(this._childs[i]._onKeyPress) {
-                    this._childs[i]._onKeyPress(e);  
-                }  
+                // if(this._childs[i]._onKeyPress) {
+                    this._childs[i].__onKeyPress(e);  
+                // }  
             }
 
         };
 
         me.__onKeyUp = function(e) {
             for(var i in this._childs) {
-                if(this._childs[i]._onKeyUp) {
-                    this._childs[i]._onKeyUp(e);  
-                }  
+                // if(this._childs[i]._onKeyUp) {
+                    this._childs[i].__onKeyUp(e);  
+                // }  
             }
 
         };
@@ -62,27 +62,27 @@
         // event form mouse
         me.__onMouseDown = function(e) {
             for(var i in this._childs) {
-                if(this._childs[i]._onMouseDown) {
-                    this._childs[i]._onMouseDown(e);  
-                }  
+                // if(this._childs[i]._onMouseDown) {
+                    this._childs[i].__onMouseDown(e);  
+                // }  
             }
 
         };
 
         me.__onMouseUp = function(e) {
             for(var i in this._childs) {
-                if(this._childs[i]._onMouseUp) {
-                    this._childs[i]._onMouseUp(e);  
-                }  
+                // if(this._childs[i]._onMouseUp) {
+                    this._childs[i].__onMouseUp(e);  
+                // }  
             }
 
         }
 
         me.__onMouseMove = function(e) {
             for(var i in this._childs) {
-                if(this._childs[i]._onMouseMove) {
-                    this._childs[i]._onMouseMove(e);  
-                }  
+                // if(this._childs[i]._onMouseMove) {
+                    this._childs[i].__onMouseMove(e);  
+                // }  
             }
 
         };
@@ -115,11 +115,12 @@
 
                 var step = (function(O) {
                     return function() {
-                        // O.__clear();
 
                         O.__processEvents();
                         O.__update();
-                        // O.__draw();                            
+                        O.__clear();
+                        O.__draw();                            
+
                     };
                 })(this);
 
@@ -213,38 +214,6 @@
             window.onkeyup = null; 
             
         };
-
-        // me.ListenMouseEvents = function() {
-        //     var self = this;
-        //     for(var i in this._layers) {
-        //         this._layers[i]._canvasElement.onmousedown = function(e) { 
-        //             self.SendEvent({name:"onMouseDown", type:"mouse", layer: self._layers[i], e: e}); };
-        //         this._layers[i]._canvasElement.onmouseup = function(e) { 
-        //             self.SendEvent({name:"onMouseUp", type:"mouse", layer: self._layers[i], e: e}); };
-        //         this._layers[i]._canvasElement.onmousemove = function(e) {
-        //          self.SendEvent({name:"onMouseMove", type:"mouse", layer: self._layers[i], e: e}); };
-        //     };
-
-        // };
-        // me.NotListenMouseEvents = function() {
-        //     for(var i in this._layers) {
-        //         this._layers[i]._canvasElement.onmousedown = null;
-        //         this._layers[i]._canvasElement.onmouseup = null;
-        //         this._layers[i]._canvasElement.onmousemove = null;
-        //     }
-        // };
-
-        // me.ListenMouseKeyboardEvents = function() {
-        //     this.ListenKeybordEvents();
-        //     this.ListenMouseEvents();
-
-        // };
-        // me.NotListenMouseKeyboardEvents = function() {
-        //     this.NotListenKeybordEvents();
-        //     this.NotListenMouseEvents();
-
-        // };
-
 
         me.SendEvent = function(event) {
             this._eventStack.Push(event);
