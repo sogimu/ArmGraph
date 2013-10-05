@@ -7,3 +7,6 @@
 [submodule "lib/stats.js"]
 	path = lib/stats.js
 	url = https://github.com/mrdoob/stats.js
+[submodule "lib/Closure-compiler"]
+	path = lib/Closure-compiler
+	url = https://github.com/sogimu/Closure-compiler
