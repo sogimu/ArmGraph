@@ -1,11 +1,11 @@
 (function(window) {
-    var EventStack = function() {
+    var EventQueue = function() {
 
         var me = {};
 
         me.Push = function(reg) {
             try {
-                this._stack.push(reg)
+                this._queue.push(reg)
                 return true;
             }
             catch(e) {
@@ -14,7 +14,7 @@
         };
 
         me.Pop = function() {
-            var event = this._stack.shift();
+            var event = this._queue.shift();
             if(event != undefined) {
                 return event;
             } else {
@@ -22,11 +22,11 @@
             }
         };
 
-        me._stack = [];
+        me._queue = [];
 
         return me;
     };
 
-    window.ArmGraph.EventStack = EventStack;
+    window.ArmGraph.EventQueue = EventQueue;
 
 })(window);

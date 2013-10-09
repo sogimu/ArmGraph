@@ -3,210 +3,113 @@
 
         var me = {};
 
-        me.__begin = function() {
-            for(var i in this._childs) {
-                this._childs[i].__begin();
-            }
-            
-        };
-
-        me.__update = function() {
-            for(var i in this._childs) {
-                this._childs[i].__update();
-            }             
-
-        };
-
-        me.__draw = function() {
-            for(var i in this._childs) {
-                this._childs[i].__draw();
-            }
-            
-        };
-
-        me.__clear = function() {
-            for(var i=0;i<this._childs.length;i++) {            
-            // for(var i=this._childs.length-1;i>=0;i--) {
-                this._childs[i].__clear();
-            };
-        };
-
-        // event form mouse
-        me.__onKeyDown = function(e) {
-            for(var i in this._childs) {
-                if(this._childs[i]._onKeyDown) {
-                    this._childs[i]._onKeyDown(e);  
-                }  
-            }
-
-        };
-
-        me.__onKeyPress = function(e) {
-            for(var i in this._childs) {
-                // if(this._childs[i]._onKeyPress) {
-                    this._childs[i].__onKeyPress(e);  
-                // }  
-            }
-
-        };
-
-        me.__onKeyUp = function(e) {
-            for(var i in this._childs) {
-                // if(this._childs[i]._onKeyUp) {
-                    this._childs[i].__onKeyUp(e);  
-                // }  
-            }
-
-        };
-
-        // event form mouse
-        me.__onMouseDown = function(e) {
-            for(var i in this._childs) {
-                // if(this._childs[i]._onMouseDown) {
-                    this._childs[i].__onMouseDown(e);  
-                // }  
-            }
-
-        };
-
-        me.__onMouseUp = function(e) {
-            for(var i in this._childs) {
-                // if(this._childs[i]._onMouseUp) {
-                    this._childs[i].__onMouseUp(e);  
-                // }  
-            }
-
-        }
-
-        me.__onMouseMove = function(e) {
-            for(var i in this._childs) {
-                // if(this._childs[i]._onMouseMove) {
-                    this._childs[i].__onMouseMove(e);  
-                // }  
-            }
-
-        };
-
-
-        me.AddChild = function( O ) {
+        me.AddObject = function( O ) {
             gizmo.Filter(O,"Object");
-            this._childs.push(O);        	
+
+            this._graphObjects.Add( O );
         };
 
-        me.RemoveChild = function( O ) {
+        me.RemoveObject = function( O ) {
             gizmo.Filter(O,"Object");
-            var index = 0;
-            if( (index = this._childs.indexOf(O)) != -1) {
-                delete( this._childs[ index ] );
-            };
+
+            return this._graphObjects.Remove( O );
         };
 
         me.Start = function() {
-            this.__begin();
-                
-            this.Start = function() {
-                if(this._isRuning) {
-                    this.Stop();
-                    this.NotListenKeybordEvents();
+            this._loop.Start();
+        };
 
-                };
+        me.Stop = function() {
+            this._loop.Stop();
+        };
 
-                this.ListenKeybordEvents();
+        me.Pause = function() {
+            this._loop.Pause();
+        };
 
-                var step = (function(O) {
-                    return function() {
+        me.Restart = function() {
+            this._loop.Restart();
+        };
 
-                        O.__processEvents();
-                        O.__update();
-                        O.__clear();
-                        O.__draw();                            
+        me.SetLisener = function(name,func) {
+            gizmo.Filter(name,"String");
+            gizmo.Filter(func,"Function");
+            if(name && func) {
+                if(this['_'+name]) {
+                    gizmo.Filter(this['_'+name], "Array");
+                    var index = 0;
+                    if( (index = this['_'+name].indexOf(func)) == -1) {
+                        this['_'+name].push( func );
 
-                    };
-                })(this);
-
-                //step();
-                
-                this._onEachFrame(step);
-
-                this._isRuning = true;
-
-                return this;
-
-            };
-
-            this.Start();
+                    } else {
+                        console.log("This Function allredy added for event " + name + " of Root " + this.GetName());
+                    }
+                } else {
+                    this['_'+name] = [];
+                    this.SetLisener(name, func);
+                }        
+            }
 
             return this;
         };
 
-        me.Stop = function() {
-            if(this._request) {
-                    this._cancelAnimationFrame.call(window,this._request);
-                    this._isRuning = false;
-            };
+        me.GetLisener = function(name) {
+            gizmo.Filter(name,"String");
+            if(this['_'+name]) {
+                return this['_'+name];        
+            } else {
+                return false;
+            }
         };
 
-        me.SetEachFrame = function() {
-            var self = this;
+        me.GetDefaultName = function() {
+            return this._defaultName;
+        };
 
-            var _onEachFrame;
-            if(this._fps > 0) {
-                var fps = this._fps;
-                _onEachFrame = function(cb) {
-                    this._request = setInterval(cb, 1000 / fps);
-                };
-
-                this._cancelAnimationFrame = window.clearInterval;
-
-            } else {
-                if (window.webkitRequestAnimationFrame) {
-                _onEachFrame = function(cb) {
-                    var _cb = function() { 
-                        cb(); 
-                        self._request = webkitRequestAnimationFrame(_cb);
-                    };
-                    _cb();
-                };
-                } else if (window.mozRequestAnimationFrame) {
-                    _onEachFrame = function(cb) {
-                        var _cb = function() { 
-                            cb();
-                            self._request = mozRequestAnimationFrame(_cb);
-                        };
-                        _cb();
-                    };
-                } else if (window.requestAnimationFrame) {
-                    _onEachFrame = function(cb) {
-                        var _cb = function() { 
-                            cb();
-                            self._request = requestAnimationFrame(_cb);
-                        };
-                        _cb();
-                    };
-                } else if (window.msRequestAnimationFrame) {
-                    _onEachFrame = function(cb) {
-                        var _cb = function() { 
-                            cb();
-                            self._request = msRequestAnimationFrame(_cb);
-                        };
-                        _cb();
-                    };
-                };
-
-                this._cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame;
+        me.Begin = function() {
+            var objects = this._graphObjects.GetArray();
+            for(var object in objects) {
+                objects[object]._begin();
             };
+            
+        };
 
-            this._onEachFrame = _onEachFrame;
+        me.Update = function() {
+            var objects = this._graphObjects.GetArray();
+            for(var object in objects) {
+                objects[object]._update();
+            };             
 
+        };
+
+        me.Draw = function() {
+            var objects = this._graphObjects.GetArray();
+            for(var object in objects) {
+                objects[object]._draw();
+            };
+            
+        };
+
+        me.Clear = function() {
+            var objects = this._graphObjects.GetArray();
+            for(var object in objects) {
+                objects[object]._clear();
+            };
         };
 
         me.ListenKeybordEvents = function() {
             var self = this;
-            window.onkeydown = function(e) {    self.SendEvent({name:"onKeyDown", type:"keyboard", e: e}); };
-            window.onkeypress = function(e) {   self.SendEvent({name:"onKeyPress", type:"keyboard", e: e}); };
-            window.onkeyup = function(e) {  self.SendEvent({name:"onKeyUp", type:"keyboard", e: e}); };
+
+            var SendEvent = function(event) {
+                self._eventQueue.Push(event);
+            };
+        
+            window.onkeydown  = function(e) {   SendEvent({name:"onKeyDown", type:"keyboard", e: e});   };
+            window.onkeypress = function(e) {   SendEvent({name:"onKeyPress", type:"keyboard", e: e});  };
+            window.onkeyup    = function(e) {   SendEvent({name:"onKeyUp", type:"keyboard", e: e});     };
              
         };
+
         me.NotListenKeybordEvents = function() {
             var self = this;
             window.onkeydown = null;
@@ -215,33 +118,95 @@
             
         };
 
-        me.SendEvent = function(event) {
-            this._eventStack.Push(event);
-
-        };
-
-        me.__processEvents = function() {
+        me.ProcessEvents = function() {
             var event;
-            while (event = this._eventStack.Pop()) {
+            while (event = this._eventQueue.Pop()) {
                 // console.log(event);
                 //console.log(this._name);
                 
                 switch(event.name) {
-                    case "onKeyDown": this.__onKeyDown(event.e); break;
-                    case "onKeyUp": this.__onKeyUp(event.e); break;
-                    case "onKeyPress": this.__onKeyPress(event.e); break;
+                    case "onKeyDown": this.OnKeyDown(event.e); break;
+                    case "onKeyUp": this.OnKeyUp(event.e); break;
+                    case "onKeyPress": this.OnKeyPress(event.e); break;
                     
-                    case "onMouseDown": this.__onMouseDown(event); break;
-                    case "onMouseUp": this.__onMouseUp(event); break;
-                    case "onMouseMove": this.__onMouseMove(event); break;
+                    case "onMouseDown": this._onMouseDown(event); break;
+                    case "onMouseUp": this._onMouseUp(event); break;
+                    case "onMouseMove": this._onMouseMove(event); break;
 
                 };
             };
                 
         };
 
+        // event form mouse
+        me.OnKeyDown = function(e) {
+            var objects = this._graphObjects.GetArray();
+            for(var object in objects) {
+                objects[object]._onKeyDown(e);
+            };
+
+        };
+
+        me.OnKeyPress = function(e) {
+            var objects = this._graphObjects.GetArray();
+            for(var object in objects) {
+                objects[object]._onKeyPress(e);
+            };
+        };
+
+        me.OnKeyUp = function(e) {
+            var objects = this._graphObjects.GetArray();
+            for(var object in objects) {
+                objects[object]._onKeyUp(e);
+            };
+        };
+
+        // event form mouse
+        me.OnMouseDown = function(e) {    
+            this._eventQueue.Push({name:"onMouseDown", type:"mouse", e: e});
+
+        };
+
+        me._onMouseDown = function(e) {
+            var objects = this._graphObjects.GetArray();
+            for(var object in objects) {
+                objects[object]._onMouseDown(e);
+            };
+
+        };
+
+        me.OnMouseUp = function(e) {            
+            this._eventQueue.Push({name:"onMouseUp", type:"mouse", e: e});
+        };
+
+        me._onMouseUp = function(e) {
+            var objects = this._graphObjects.GetArray();
+            for(var object in objects) {
+                objects[object]._onMouseUp(e);
+            };
+        };
+
+        me.OnMouseMove = function(e) {
+            this._eventQueue.Push({name:"onMouseMove", type:"mouse", e: e});
+        };
+
+        me._onMouseMove = function(e) {
+            var objects = this._graphObjects.GetArray();
+            for(var object in objects) {
+                objects[object]._onMouseMove(e);
+            };
+        };
+
+        me.SetFPS = function(fps) {
+            gizmo.Filter(fps,"Number");
+            this._loop.Set({"fps": fps});
+        };
+
+        me.GetFPS = function() {
+            return this._loop.GetFPS();
+        };        
+
         me.Set = function( O ) {
-            // this._fps = ( O.fps && (O.fps > 0) ) ? O.fps : 0;
             for(var name in O) {
                 switch( name ) {
                     case "layer": {
@@ -250,9 +215,9 @@
                                 for(var layer in O[name]) {
                                     this._layers.push( O[name][layer] );
 
-                                    O[name][layer].SetLisener("onMouseMove", this.__onMouseMove);
-                                    O[name][layer].SetLisener("onMouseDown", this.__onMouseDown);
-                                    O[name][layer].SetLisener("onMouseUp", this.__onMouseUp);
+                                    O[name][layer].SetLisener("onMouseMove", this.OnMouseMove);
+                                    O[name][layer].SetLisener("onMouseDown", this.OnMouseDown);
+                                    O[name][layer].SetLisener("onMouseUp", this.OnMouseUp);
 
                                 }
                                 break;
@@ -261,13 +226,13 @@
                                 this._layers.push( O[name] );
                                 var self = this;
                                 O[name].SetLisener("onMouseMove", function(e) {
-                                    self.__onMouseMove(e);
+                                    self.OnMouseMove(e);
                                 });
                                 O[name].SetLisener("onMouseDown", function(e) {
-                                    self.__onMouseDown(e);
+                                    self.OnMouseDown(e);
                                 });
                                 O[name].SetLisener("onMouseUp", function(e) {
-                                    self.__onMouseUp(e);
+                                    self.OnMouseUp(e);
                                 });
                                 break;
                             }
@@ -275,31 +240,36 @@
                     };
                     break;
 
-                    case "fps"  : { this._fps = O[name];  };
+                    case "fps"  : { this.SetFPS( O[name] ); };
                     break;
                 };
-            }
-
-            if( this._isRuning ) {
-                this.Stop();
-                this.SetEachFrame();
-                this.Start();
-            } else {
-                this.SetEachFrame();
             };
 
         };
-
-        me._childs = [];
-        me._fps = 0;
-        me._onEachFrame = null;
-        me._cancelAnimationFrame = null;
-        me._request = null;
-        me._isRuning = false;
+        
+        me._defaultName = "Root";
+        me._name = me.GetDefaultName() + ArmContext.GetNewUnicalNumber();           
         me._layers = [];
+        
+        me._graphObjects = new ArmContext.GraphObjects();
 
-        me._eventStack = new ArmGraph.EventStack(),
+        me._eventQueue = new ArmGraph.EventQueue();
 
+        me._loop = new ArmGraph.Loop({
+            "beginFunc": (function(O) {
+                            return function() {
+                                O.Begin();                  
+                            };
+                        })(me), 
+            "stepFunc": (function(O) {
+                            return function() {
+                                O.ProcessEvents(); 
+                                O.Update();
+                                O.Clear();
+                                O.Draw();                 
+                            };
+                        })(me)
+        });
 
         me.Set( O || {} );
 

@@ -1,6 +1,6 @@
 window.onload = function() {
 
-    Root = new ArmGraph.Root({fps: 0});
+    Root = new ArmGraph.Root({fps: 15});
 
     Game = function( O ) {
 
@@ -67,8 +67,8 @@ window.onload = function() {
 
         })
         .SetFunc("onMouseMove", function(e) {
-            var x = e.offsetX;
-            var y = e.offsetY;
+            var x = e.e.offsetX;
+            var y = e.e.offsetY;
 
             this.target = {x: x, y: y};
 
@@ -95,8 +95,8 @@ window.onload = function() {
 
         })
         .SetFunc("onMouseDown", function(e) {
-            var x = e.offsetX;
-            var y = e.offsetY;
+            var x = e.e.offsetX;
+            var y = e.e.offsetY;
             
             if( this.Button.HasPoint({x: x, y: y}) ) {
                 this.Button.Set({fillObject: this.onMoveColor})
@@ -111,8 +111,8 @@ window.onload = function() {
 
         })
         .SetFunc("onMouseUp", function(e) {
-            var x = e.offsetX;
-            var y = e.offsetY;
+            var x = e.e.offsetX;
+            var y = e.e.offsetY;
             this.isDruging = false;
 
             this.Button.Set({fillObject: this.normalColor})
@@ -142,13 +142,15 @@ window.onload = function() {
 
     for(var i=1; i< 20; i++) {
         for(var j=1; j< 20; j++) {    
-            // i=1;
-            // j=1;
+    //         // i=1;
+    //         // j=1;
             firstButton = new Button({owner: G, normalColor: "#00ff00", onMoveColor: "#ff0000", x: i*14+10*Math.random(), y: j*14+10*Math.random(), width: 10+10*Math.random(), height: 10+10*Math.random()});
-            // secondButton = new Button({owner: Root, name: "secondButton", normalColor: "#aaff00", onMoveColor: "#ffaa00", x: i*12, y: 233});
+    //         // secondButton = new Button({owner: Root, name: "secondButton", normalColor: "#aaff00", onMoveColor: "#ffaa00", x: i*12, y: 233});
         }
     }
-    
     Root.Start();
+
+    // firstButton = new Button({owner: G, normalColor: "#00ff00", onMoveColor: "#ff0000", x: 14, y: 14, width: 10, height: 10});    
+    
 
 };
