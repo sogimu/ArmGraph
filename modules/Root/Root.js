@@ -6,13 +6,13 @@
         me.AddObject = function( O ) {
             gizmo.Filter(O,"Object");
 
-            this._graphObjects.Add( O );
+            this._nodes.Add( O );
         };
 
         me.RemoveObject = function( O ) {
             gizmo.Filter(O,"Object");
 
-            return this._graphObjects.Remove( O );
+            return this._nodes.Remove( O );
         };
 
         me.Start = function() {
@@ -67,7 +67,7 @@
         };
 
         me.Begin = function() {
-            var objects = this._graphObjects.GetArray();
+            var objects = this._nodes.GetArray();
             for(var object in objects) {
                 objects[object]._begin();
             };
@@ -75,7 +75,7 @@
         };
 
         me.Update = function() {
-            var objects = this._graphObjects.GetArray();
+            var objects = this._nodes.GetArray();
             for(var object in objects) {
                 objects[object]._update();
             };             
@@ -83,7 +83,7 @@
         };
 
         me.Draw = function() {
-            var objects = this._graphObjects.GetArray();
+            var objects = this._nodes.GetArray();
             for(var object in objects) {
                 objects[object]._draw();
             };
@@ -91,7 +91,7 @@
         };
 
         me.Clear = function() {
-            var objects = this._graphObjects.GetArray();
+            var objects = this._nodes.GetArray();
             for(var object in objects) {
                 objects[object]._clear();
             };
@@ -125,12 +125,12 @@
                 //console.log(this._name);
                 
                 switch(event.name) {
-                    case "onKeyDown": this.OnKeyDown(event.e); break;
-                    case "onKeyUp": this.OnKeyUp(event.e); break;
-                    case "onKeyPress": this.OnKeyPress(event.e); break;
+                    case "onKeyDown":   this.OnKeyDown(event.e); break;
+                    case "onKeyUp":     this.OnKeyUp(event.e); break;
+                    case "onKeyPress":  this.OnKeyPress(event.e); break;
                     
                     case "onMouseDown": this._onMouseDown(event); break;
-                    case "onMouseUp": this._onMouseUp(event); break;
+                    case "onMouseUp":   this._onMouseUp(event); break;
                     case "onMouseMove": this._onMouseMove(event); break;
 
                 };
@@ -140,7 +140,7 @@
 
         // event form mouse
         me.OnKeyDown = function(e) {
-            var objects = this._graphObjects.GetArray();
+            var objects = this._nodes.GetArray();
             for(var object in objects) {
                 objects[object]._onKeyDown(e);
             };
@@ -148,14 +148,14 @@
         };
 
         me.OnKeyPress = function(e) {
-            var objects = this._graphObjects.GetArray();
+            var objects = this._nodes.GetArray();
             for(var object in objects) {
                 objects[object]._onKeyPress(e);
             };
         };
 
         me.OnKeyUp = function(e) {
-            var objects = this._graphObjects.GetArray();
+            var objects = this._nodes.GetArray();
             for(var object in objects) {
                 objects[object]._onKeyUp(e);
             };
@@ -168,7 +168,7 @@
         };
 
         me._onMouseDown = function(e) {
-            var objects = this._graphObjects.GetArray();
+            var objects = this._nodes.GetArray();
             for(var object in objects) {
                 objects[object]._onMouseDown(e);
             };
@@ -180,7 +180,7 @@
         };
 
         me._onMouseUp = function(e) {
-            var objects = this._graphObjects.GetArray();
+            var objects = this._nodes.GetArray();
             for(var object in objects) {
                 objects[object]._onMouseUp(e);
             };
@@ -191,7 +191,7 @@
         };
 
         me._onMouseMove = function(e) {
-            var objects = this._graphObjects.GetArray();
+            var objects = this._nodes.GetArray();
             for(var object in objects) {
                 objects[object]._onMouseMove(e);
             };
@@ -251,7 +251,7 @@
         me._name = me.GetDefaultName() + ArmContext.GetNewUnicalNumber();           
         me._layers = [];
         
-        me._graphObjects = new ArmContext.GraphObjects();
+        me._nodes = new ArmContext.Nodes();
 
         me._eventQueue = new ArmGraph.EventQueue();
 

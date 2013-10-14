@@ -1,7 +1,7 @@
 #!/bin/bash
 
 NAME="armgraph"
-VERSION="0.1.2"
+VERSION="0.1.3"
 RASHIR="js"
 
 FILE_NAME=$NAME-$VERSION.$RASHIR
@@ -15,7 +15,7 @@ COMPILATION_LEVEL="WHITESPACE_ONLY"
 # COMPILATION_LEVEL="ADVANCED_OPTIMIZATIONS"
 
 echo "Building..."
-java -jar "$PATH_TO_COMPILER"compiler.jar --js modules/ArmGraph/ArmGraph.js --js modules/GameGraphObject/GameGraphObject.js --js modules/GameGraphObject/GameGraphObjects.js --js modules/Root/EventQueue.js --js modules/Root/Loop.js --js modules/Root/Root.js --compilation_level "$COMPILATION_LEVEL" --language_in ECMASCRIPT5 --js_output_file ./$FILE_NAME_MIN
+java -jar "$PATH_TO_COMPILER"compiler.jar --js modules/ArmGraph/ArmGraph.js --js modules/Node/Node.js --js modules/Node/Nodes.js --js modules/Root/EventQueue.js --js modules/Root/Loop.js --js modules/Root/Root.js --compilation_level "$COMPILATION_LEVEL" --language_in ECMASCRIPT5 --js_output_file ./$FILE_NAME_MIN
 
 echo "$FILE_NAME_MIN"
 

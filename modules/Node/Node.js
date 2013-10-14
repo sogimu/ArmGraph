@@ -1,5 +1,5 @@
 (function(window) {
-    var ArmObject = function( O ) {
+    var Node = function( O ) {
 
         var me = {};
 
@@ -7,7 +7,7 @@
             if(this.begin) {
                 this.begin();
             };
-            var objects = this._graphObjects.GetArray();
+            var objects = this._nodes.GetArray();
             for(var object in objects) {
                 objects[object]._begin();
             };
@@ -20,7 +20,7 @@
             if(this.update) {
                 this.update();
             };
-            var objects = this._graphObjects.GetArray();
+            var objects = this._nodes.GetArray();
             for(var object in objects) {
                 objects[object]._update();
             };
@@ -33,7 +33,7 @@
             if(this.draw) {
                 this.draw();
             };
-            var objects = this._graphObjects.GetArray();
+            var objects = this._nodes.GetArray();
             for(var object in objects) {
                 objects[object]._draw();
             };
@@ -47,7 +47,7 @@
             if(this.clear) {
                 this.clear();
             };
-            var objects = this._graphObjects.GetArray();
+            var objects = this._nodes.GetArray();
             for(var object in objects) {
                 objects[object]._clear();
             };
@@ -61,7 +61,7 @@
             if(this.onKeyDown) {
                 this.onKeyDown(e);  
             };
-            var objects = this._graphObjects.GetArray();
+            var objects = this._nodes.GetArray();
             for(var object in objects) {
                 objects[object]._onKeyDown(e);
             };
@@ -72,7 +72,7 @@
             if(this.onKeyPress) {
                 this.onKeyPress(e);  
             };  
-            var objects = this._graphObjects.GetArray();
+            var objects = this._nodes.GetArray();
             for(var object in objects) {
                 objects[object]._onKeyPress(e);
             };
@@ -83,7 +83,7 @@
             if(this.onKeyUp) {
                 this.onKeyUp(e);  
             };
-            var objects = this._graphObjects.GetArray();
+            var objects = this._nodes.GetArray();
             for(var object in objects) {
                 objects[object]._onKeyUp(e);
             };
@@ -95,7 +95,7 @@
             if(this.onMouseDown) {
                 this.onMouseDown(e);  
             };
-            var objects = this._graphObjects.GetArray();
+            var objects = this._nodes.GetArray();
             for(var object in objects) {
                 objects[object]._onMouseDown(e);
             };
@@ -106,7 +106,7 @@
             if(this.onMouseUp) {
                 this.onMouseUp(e);  
             };
-            var objects = this._graphObjects.GetArray();
+            var objects = this._nodes.GetArray();
             for(var object in objects) {
                 objects[object]._onMouseUp(e);
             };
@@ -116,7 +116,7 @@
             if(this.onMouseMove) {
                 this.onMouseMove(e);  
             };
-            var objects = this._graphObjects.GetArray();
+            var objects = this._nodes.GetArray();
             for(var object in objects) {
                 objects[object]._onMouseMove(e);
             };
@@ -124,12 +124,12 @@
 
         me.AddObject = function( O ) {
             gizmo.Filter(O,"Object");
-            this._graphObjects.Add( O );
+            this._nodes.Add( O );
         };
 
         me.RemoveObject = function( O ) {
             gizmo.Filter(O,"Object");
-            return this._graphObjects.Remove( O );
+            return this._nodes.Remove( O );
         };
 
         me.SetFunc = function(name,func) {
@@ -212,12 +212,11 @@
 
         };
 
-        me._defaultName = "GameGraphObject";
+        me._defaultName = "GameNode";
         me._name = me.GetDefaultName() + ArmGraph.GetNewUnicalNumber();
         me._owner = null;
 
-        // me._childs = [];
-        me._graphObjects = new ArmContext.GraphObjects();
+        me._nodes = new ArmContext.Nodes();
 
 
         me.Set( O || {} );
@@ -225,6 +224,6 @@
     return me;
     };
 
-    window.ArmGraph.ArmObject = ArmObject;
+    window.ArmGraph.Node = Node;
 
 })(window);

@@ -1,12 +1,12 @@
 
 (function(window) {
-	var GraphObjects = function(O) {
+	var Nodes = function(O) {
 
 		var me = {};
 
         me.Add = function( O ) {
             gizmo.Filter(O,"Object");
-            this._graphObjects.push(O);
+            this._Nodes.push(O);
 
             return this;
         };
@@ -14,8 +14,8 @@
         me.Remove = function( O ) {
             gizmo.Filter(O,"Object");
             var index = 0;
-            if( (index = this._graphObjects.indexOf(O)) != -1) {
-                delete( this._graphObjects[ index ] );
+            if( (index = this._Nodes.indexOf(O)) != -1) {
+                delete( this._Nodes[ index ] );
                 return true;
             } else {
                 return false;
@@ -23,7 +23,7 @@
         };
 
         me.GetArray = function() {
-            return this._graphObjects;
+            return this._Nodes;
         };
 
 		me.Set = function( O ) {
@@ -31,12 +31,12 @@
 
             for(var name in O) {
                 switch( name ) {
-                    case "graphObjects" : {
-                        var graphObjects = O[name];
+                    case "Nodes" : {
+                        var Nodes = O[name];
 
-                        gizmo.Filter(graphObjects, "Array");
-                        for(var primitive in graphObjects) {
-                            this.Add( graphObjects[primitive] );
+                        gizmo.Filter(Nodes, "Array");
+                        for(var primitive in Nodes) {
+                            this.Add( Nodes[primitive] );
                         };
                     }; break;
 
@@ -45,7 +45,7 @@
 
 		};
 
-		me._graphObjects = [];
+		me._Nodes = [];
 
 		me.Set( O || {} );
 
@@ -53,6 +53,6 @@
 
 	};
 
-	window.ArmContext.GraphObjects = GraphObjects;
+	window.ArmContext.Nodes = Nodes;
 
 })(window);
