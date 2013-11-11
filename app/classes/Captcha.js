@@ -142,16 +142,17 @@
 
 
         })
-        .SetFunc("afterUpdate", function() {
-            this.layer.__update();
+        .SetFunc("update", function() {
+            // this.layer.__update();
         
         })
-        .SetFunc("afterClear", function() {
-            this.layer.__clear();
+        .SetFunc("clear", function() {
+            // this.layer.__clear();
+            me.layer.GetCtx().clearRect(0,0,me.layer.GetWidth(),me.layer.GetHeight());
 
         })
-        .SetFunc("afterDraw", function() {
-            this.layer.__draw();
+        .SetFunc("draw", function() {
+            // this.layer.__draw();
 
         });
 

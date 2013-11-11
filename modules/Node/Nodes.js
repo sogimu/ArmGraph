@@ -6,7 +6,7 @@
 
         me.Add = function( O ) {
             gizmo.Filter(O,"Object");
-            this._Nodes.push(O);
+            this._nodes.push(O);
 
             return this;
         };
@@ -14,16 +14,24 @@
         me.Remove = function( O ) {
             gizmo.Filter(O,"Object");
             var index = 0;
-            if( (index = this._Nodes.indexOf(O)) != -1) {
-                delete( this._Nodes[ index ] );
+            if( (index = this._nodes.indexOf(O)) != -1) {
+                delete( this._nodes[ index ] );
                 return true;
             } else {
                 return false;
             };
         };
 
+        me.RemoveAll = function() {
+            for(var nodeName in this._nodes) {
+                this._nodes[nodeName]._clear();
+            };
+
+            this._nodes = [];
+        };
+
         me.GetArray = function() {
-            return this._Nodes;
+            return this._nodes;
         };
 
 		me.Set = function( O ) {
@@ -45,7 +53,7 @@
 
 		};
 
-		me._Nodes = [];
+		me._nodes = [];
 
 		me.Set( O || {} );
 

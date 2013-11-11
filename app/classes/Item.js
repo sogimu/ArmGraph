@@ -26,7 +26,7 @@
             var x = e.e.offsetX;
             var y = e.e.offsetY;
             
-            if( this.Button.HasPoint({x: x, y: y}) ) {
+            if( this.Button.HasPoint({x: x, y: y}) && me.GetProp("owner").layer.GetTopestPrimitiveUnderPoint({x: x, y: y}) == this.Button ) {
                 
                 this.isDruging = true;
 
@@ -39,6 +39,12 @@
         .SetFunc("onMouseUp", function(e) {
             this.isDruging = false;
 
+        })
+        .SetFunc("clear", function(e) {
+            // this.Button.Clear();
+        })
+        .SetFunc("draw", function(e) {
+            this.Button.Draw();
         })
 
         me.SetMaxLeft = function(maxLeft) {

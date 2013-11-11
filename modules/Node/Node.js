@@ -17,43 +17,43 @@
         };
 
         me._update = function() {
-            if(this.update) {
-                this.update();
-            };
             var objects = this._nodes.GetArray();
             for(var object in objects) {
                 objects[object]._update();
             };
-            if(this.afterUpdate) {
-                this.afterUpdate();
-            };             
+            if(this.update) {
+                this.update();
+            };
+            // if(this.afterUpdate) {
+            //     this.afterUpdate();
+            // };             
         };
 
         me._draw = function() {
-            if(this.draw) {
-                this.draw();
-            };
             var objects = this._nodes.GetArray();
             for(var object in objects) {
                 objects[object]._draw();
             };
-            if(this.afterDraw) {
-                this.afterDraw();
+            if(this.draw) {
+                this.draw();
             };
+            // if(this.afterDraw) {
+            //     this.afterDraw();
+            // };
             
         };
 
         me._clear = function() {
-            if(this.clear) {
-                this.clear();
-            };
             var objects = this._nodes.GetArray();
             for(var object in objects) {
                 objects[object]._clear();
             };
-            if(this.afterClear) {
-                this.afterClear();
+            if(this.clear) {
+                this.clear();
             };
+            // if(this.afterClear) {
+            //     this.afterClear();
+            // };
         };
 
         // event form mouse
@@ -130,6 +130,10 @@
         me.RemoveObject = function( O ) {
             gizmo.Filter(O,"Object");
             return this._nodes.Remove( O );
+        };
+
+        me.RemoveAll = function() {
+            this._nodes.RemoveAll();
         };
 
         me.SetFunc = function(name,func) {
