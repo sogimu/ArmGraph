@@ -40,9 +40,6 @@
             this.isDruging = false;
 
         })
-        .SetFunc("clear", function(e) {
-            // this.Button.Clear();
-        })
         .SetFunc("draw", function(e) {
             this.Button.Draw();
         })
