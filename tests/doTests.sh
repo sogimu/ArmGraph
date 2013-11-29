@@ -1,1 +1,0 @@
-phantomjs tests/run-qunit.js tests/index.htm junit-xml > tests/test.xml

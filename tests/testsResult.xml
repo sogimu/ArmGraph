@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!--
+ Tests completed in 18 milliseconds.
+1 tests of 2 passed, 1 failed. 
+-->
+<testsuite name="QUnit - JavaScript Tests" timestamp="2013-11-29T00:32:24Z" tests="2" failures="1" time="0.018">
+<testcase name="World.GetPrimitivesFormArea()" classname="World">
+<failure message="World" type="World">
+Died on test #1     at file:///home/sogimu/ArmGraphREBEL/tests/resources/qunit-1.10.0.js:343
+    at file:///home/sogimu/ArmGraphREBEL/tests/tests.js:21: 'undefined' is not a function (evaluating 'ArmGraph.World()')Source: TypeError: 'undefined' is not a function (evaluating 'ArmGraph.World()')
+</failure>
+</testcase>
+<testcase name="World.GetPrimitives()" classname="World">
+</testcase>
+</testsuite>

@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<!--
- Tests completed in 17 milliseconds.
-1 tests of 1 passed, 0 failed. 
--->
-<testsuite name="QUnit - JavaScript Tests" timestamp="2013-10-31T14:51:13Z" tests="1" failures="0" time="0.017">
-<testcase name="Primitive" classname="Primitive">
-</testcase>
-</testsuite>
